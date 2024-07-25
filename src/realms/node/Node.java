@@ -24,6 +24,7 @@ public class Node
 			// Basic frustum culling (off-screen images are not drawn)
 			if (node.getX() + node.width <= 0.0 || node.getY() + node.height <= 0.0) continue;
 			if (node.getX() >= Realm.realm.getWindow().getWidth() || node.getY() >= Realm.realm.getWindow().getHeight()) continue;
+			if (!node.isVisible()) continue;
 
 			node.draw(g);
 		}
@@ -34,6 +35,7 @@ public class Node
 	public double x, y;
 	public double width, height;
 	public boolean moveWithCamera = true;
+	public boolean visible = true;
 
 	public Node(double x, double y, double width, double height, boolean addToList)
 	{
@@ -97,6 +99,13 @@ public class Node
 			childNodes.add(childNode);
 		}
 		return childNodes;
+	}
+
+	public boolean isVisible()
+	{
+		if (parent == null)
+			return this.visible;
+		return this.visible && parent.isVisible();
 	}
 
 	public double getX()
