@@ -62,6 +62,17 @@ public class TileWorldNode extends Node
 		return tileY * columns + tileX;
 	}
 
+	public void set(int index, int tileType)
+	{
+		tiles.set(index, tileType);
+		tileSprites.get(index).texture = tileSet.get(tileType);
+	}
+
+	public void set(int x, int y, int tileType)
+	{
+		set(y*columns + x, tileType);
+	}
+
 	private void createTileSprites()
 	{
 		tileSprites = new ArrayList<>();
