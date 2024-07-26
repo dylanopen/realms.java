@@ -46,10 +46,11 @@ public class Loop implements Runnable
 			frameDelta += (currentNanoTime - lastNanoTime) / nanoDrawInterval;
 			lastNanoTime = currentNanoTime;
 			if (frameDelta < 1) continue;
+			Node.pushQueuedNodes();
 			update();
 			draw();
 			frameDelta--;
-
 		}
+
 	}
 }

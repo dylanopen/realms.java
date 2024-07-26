@@ -8,6 +8,7 @@ import java.util.ArrayList;
 public class Node
 {
 	private static ArrayList<Node> allNodes = new ArrayList<>();
+	private static ArrayList<Node> queuedNodes = new ArrayList<>();
 
 	public static void updateAll()
 	{
@@ -19,8 +20,9 @@ public class Node
 
 	public static void drawAll(Graphics2D g)
 	{
-		for (Node node : allNodes)
+		for (int i = 0; i < allNodes.size(); i++)
 		{
+			Node node = allNodes.get(i);
 			// Basic frustum culling (off-screen images are not drawn)
 			if (node.getX() + node.width <= 0.0 || node.getY() + node.height <= 0.0) continue;
 			if (node.getX() >= Realm.realm.getWindow().getWidth() || node.getY() >= Realm.realm.getWindow().getHeight()) continue;
@@ -28,6 +30,11 @@ public class Node
 
 			node.draw(g);
 		}
+	}
+
+	public static void pushQueuedNodes()
+	{
+		allNodes.addAll(queuedNodes);
 	}
 
 	public Node parent = null;
@@ -44,7 +51,10 @@ public class Node
 		this.width = width;
 		this.height = height;
 		if (addToList)
-			allNodes.add(this);
+			if (Realm.realm.isRunning)
+				queuedNodes.add(this);
+			else
+				allNodes.add(this);
 	}
 
 	public Node(double x, double y, double width, double height)
