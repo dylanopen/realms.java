@@ -20,6 +20,8 @@ public class Node
 
 	public static void drawAll(Graphics2D g)
 	{
+		// BUG: Concurrent modification exception if using an enhanced for loop.
+		// 			Why? Not a clue.
 		for (int i = 0; i < allNodes.size(); i++)
 		{
 			Node node = allNodes.get(i);
